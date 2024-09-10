@@ -14,10 +14,10 @@ var overloaded := false
 signal system_selected(system_name: SystemName)
 
 enum SystemName {
-	FUSION_REACTOR,
-	LIFE_SUPPORT,
-	SHIELD_GENERATOR,
-	WEAPONS_SYSTEM
+	FusionReactor,
+	LifeSupport,
+	ShieldGenerator,
+	Weapons
 }
 
 func _ready() -> void:

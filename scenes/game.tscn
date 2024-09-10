@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bqwr5ooo18hb7"]
+[gd_scene load_steps=7 format=3 uid="uid://bqwr5ooo18hb7"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_1d1x4"]
 [ext_resource type="PackedScene" uid="uid://h50ra51l6osc" path="res://scenes/systems.tscn" id="2_ktb82"]
+[ext_resource type="StyleBox" uid="uid://c6vpnj5p1ehu5" path="res://resources/stats_style_box.tres" id="2_nc3ns"]
+[ext_resource type="Script" path="res://scripts/resolve_effects.gd" id="3_mqahy"]
 [ext_resource type="PackedScene" uid="uid://c47w0ekbq2n1s" path="res://scenes/hand.tscn" id="3_rt28j"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="3_t3srd"]
 
@@ -64,7 +66,71 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Action Result:"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 31.0
+offset_right = 260.0
+offset_bottom = 284.0
+theme_override_styles/panel = ExtResource("2_nc3ns")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Actions" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Choose An Action"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HotWire" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Hot Wire"
+
+[node name="PlayInstant" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Play Instant"
+
+[node name="ActivateSystem" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Activate System"
+
+[node name="DiscardOverload" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Discard Overload"
+
+[node name="ReduceShortCircuits" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Reduce Short Circuits By 2"
+
+[node name="Pass" type="Button" parent="PanelContainer/VBoxContainer/Actions"]
+layout_mode = 2
+text = "Pass"
+
+[node name="ResolveEffects" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_mqahy")
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/ResolveEffects"]
+layout_mode = 2
+text = "Resolve Effects"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="RemainingEffects" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ResolveEffects"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StopResolvingEffects" type="Button" parent="PanelContainer/VBoxContainer/ResolveEffects"]
+layout_mode = 2
+text = "Stop Resolving Effects"
+
+[node name="Cards" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -75,16 +141,16 @@ offset_bottom = 792.0
 grow_horizontal = 2
 alignment = 1
 
-[node name="OpponentSystems" parent="VBoxContainer" instance=ExtResource("2_ktb82")]
+[node name="OpponentSystems" parent="Cards" instance=ExtResource("2_ktb82")]
 unique_name_in_owner = true
 layout_mode = 2
 upside_down = true
 
-[node name="MySystems" parent="VBoxContainer" instance=ExtResource("2_ktb82")]
+[node name="MySystems" parent="Cards" instance=ExtResource("2_ktb82")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Hand" parent="VBoxContainer" instance=ExtResource("3_rt28j")]
+[node name="Hand" parent="Cards" instance=ExtResource("3_rt28j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -94,15 +160,13 @@ anchor_mode = 0
 zoom = Vector2(0.79, 0.79)
 script = ExtResource("3_t3srd")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="PlayInstant" type="Button" parent="VBoxContainer2"]
-layout_mode = 2
-text = "Play Instant"
-
-[connection signal="system_selected" from="VBoxContainer/MySystems" to="." method="_on_my_systems_system_selected"]
-[connection signal="selected_card_changed" from="VBoxContainer/Hand" to="." method="_on_hand_selected_card_changed"]
-[connection signal="pressed" from="VBoxContainer2/PlayInstant" to="." method="_on_play_instant_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/HotWire" to="." method="_on_hot_wire_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/PlayInstant" to="." method="_on_play_instant_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/ActivateSystem" to="." method="_on_activate_system_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/DiscardOverload" to="." method="_on_discard_overload_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/ReduceShortCircuits" to="." method="_on_reduce_short_circuits_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Actions/Pass" to="." method="_on_pass_pressed"]
+[connection signal="resolve_effect" from="PanelContainer/VBoxContainer/ResolveEffects" to="." method="_on_resolve_effects_resolve_effect"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/ResolveEffects/StopResolvingEffects" to="." method="_on_stop_resolving_effects_pressed"]
+[connection signal="system_selected" from="Cards/MySystems" to="." method="_on_my_systems_system_selected"]
+[connection signal="selected_card_changed" from="Cards/Hand" to="." method="_on_hand_selected_card_changed"]

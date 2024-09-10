@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkipgyivmoqkd"]
+
+[sub_resource type="GDScript" id="GDScript_fseal"]
+script/source = "extends VBoxContainer
+
+signal pass_action
+signal choose_action(action: String)
+"
+
+[node name="Actions" type="VBoxContainer"]
+script = SubResource("GDScript_fseal")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+text = "Choose An Action"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HotWire" type="Button" parent="."]
+layout_mode = 2
+text = "Hot Wire"
+
+[node name="PlayInstant" type="Button" parent="."]
+layout_mode = 2
+text = "Play Instant"
+
+[node name="ActivateSystem" type="Button" parent="."]
+layout_mode = 2
+text = "Activate System"
+
+[node name="DiscardOverload" type="Button" parent="."]
+layout_mode = 2
+text = "Discard Overload"
+
+[node name="ReduceShortCircuits" type="Button" parent="."]
+layout_mode = 2
+text = "Reduce Short Circuits By 2"
+
+[node name="Pass" type="Button" parent="."]
+layout_mode = 2
+text = "Pass"

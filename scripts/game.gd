@@ -3,12 +3,15 @@ extends Control
 @onready var my_systems: Systems = %MySystems as Systems
 @onready var opponent_systems: Systems = %OpponentSystems as Systems
 @onready var hand: Hand = %Hand as Hand
+@onready var actions: VBoxContainer = %Actions
+@onready var resolve_effects: ResolveEffects = %ResolveEffects as ResolveEffects
 
 # The URL we will connect to.
-#@export var websocket_url = "ws://127.0.0.1:8000/game"
-@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game"
+@export var websocket_url = "ws://127.0.0.1:8000/game"
+#@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game"
 var players_turn : String
 var selected_card_index: int = -1
+var has_selected_system: bool = false
 var selected_system: System.SystemName
 
 # Our WebSocketClient instance.
@@ -71,29 +74,53 @@ func _update_state(state: Dictionary):
 		opponent_systems.update_system_state(player2_state)
 		hand.update_hand(player1_state.hand)
 		_on_hand_selected_card_changed(-1)
-		_on_my_systems_system_selected(System.SystemName.FUSION_REACTOR)
+		_on_my_systems_system_selected(System.SystemName.FusionReactor, false)
+		if typeof(state.turn_state) == TYPE_STRING && state.turn_state == "ChoosingAction":
+			actions.show()
+			resolve_effects.hide()
+		else:
+			resolve_effects.update_effects(state.turn_state.ResolvingEffects.effects)
+			resolve_effects.show()
+			actions.hide()
 	else:
 		$ActionResult.text = "Action Result: " + str(state)
-
-#func _on_send_action_button_pressed() -> void:
-	#socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"HotWireCard":{"card_index":0, "system": "LifeSupport", "indices_to_discard": []}}}}}')
-#
-#
-#func _on_stop_resolving_button_pressed() -> void:
-	#socket.send_text('{"player":"' + players_turn + '","user_action":"StopResolvingEffects"}')
-#
-#
-#func _on_pass_button_pressed() -> void:
-	#socket.send_text('{"player":"' + players_turn + '","user_action":{"Pass": {"card_indices_to_discard": []}}}')
 
 func _on_hand_selected_card_changed(i: int) -> void:
 	selected_card_index = i
 	$PlayerInfo/SelectedCard.text = "Selected Card: " + str(selected_card_index)
 
-func _on_my_systems_system_selected(system_name: System.SystemName) -> void:
+func _on_my_systems_system_selected(system_name: System.SystemName, should_set_system = true) -> void:
+	has_selected_system = should_set_system
 	selected_system = system_name
-	$PlayerInfo/SelectedSystem.text = "Selected System: " + str(System.SystemName.find_key(selected_system))
+	var s := "None"
+	if has_selected_system:
+		s = str(System.SystemName.find_key(selected_system))
+	$PlayerInfo/SelectedSystem.text = "Selected System: " + s
+
+func _on_hot_wire_pressed() -> void:
+	if selected_card_index != -1 and has_selected_system:
+		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"HotWireCard":{"card_index":' + str(selected_card_index) + ', "system": "' + System.SystemName.find_key(selected_system) + '", "indices_to_discard": []}}}}}')
 
 func _on_play_instant_pressed() -> void:
 	if selected_card_index != -1:
 		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"PlayInstantCard":{"card_index":' + str(selected_card_index) + '}}}}}')
+
+func _on_activate_system_pressed() -> void:
+	if has_selected_system:
+		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"ActivateSystem":{"system": "' + System.SystemName.find_key(selected_system) + '", "energy_to_use": null, "energy_distribution": {"FusionReactor": 0, "LifeSupport": 2, "ShieldGenerator": 1, "Weapons": 2}}}}}}')
+
+func _on_discard_overload_pressed() -> void:
+	if has_selected_system:
+		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"DiscardOverload":{"system": "' + System.SystemName.find_key(selected_system) + '"}}}}}')
+
+func _on_reduce_short_circuits_pressed() -> void:
+	socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":"ReduceShortCircuits"}}}')
+
+func _on_pass_pressed() -> void:
+	socket.send_text('{"player":"' + players_turn + '","user_action":{"Pass":{"card_indices_to_discard":[]}}}')
+
+func _on_stop_resolving_effects_pressed() -> void:
+	socket.send_text('{"player":"' + players_turn + '","user_action":"StopResolvingEffects"}')
+
+func _on_resolve_effects_resolve_effect(effect: String) -> void:
+	socket.send_text('{"player":"' + players_turn + '","user_action":{"ResolveEffect": {"resolve_effect": "' + effect + '"}}}')
