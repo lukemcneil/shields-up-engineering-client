@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://h50ra51l6osc"]
+
+[ext_resource type="Script" path="res://scripts/systems.gd" id="1_o6sea"]
+[ext_resource type="PackedScene" uid="uid://vpapewogxcfi" path="res://scenes/system.tscn" id="2_371um"]
+[ext_resource type="Texture2D" uid="uid://bp31fplfvv1w0" path="res://assets/cards/lifesupport.png" id="4_mmjhy"]
+[ext_resource type="Texture2D" uid="uid://wq264j2lrk82" path="res://assets/cards/shieldgenerator.png" id="5_k4m7m"]
+[ext_resource type="Texture2D" uid="uid://ccxgug53ci5kk" path="res://assets/cards/weaponssystem.png" id="6_u4frt"]
+[ext_resource type="PackedScene" uid="uid://dhieqvvc5eg2i" path="res://scenes/stats.tscn" id="7_nxbhq"]
+
+[node name="Systems" type="HBoxContainer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -236.0
+offset_right = 236.0
+offset_bottom = 284.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 35
+alignment = 1
+script = ExtResource("1_o6sea")
+
+[node name="FusionReactor" parent="." instance=ExtResource("2_371um")]
+layout_mode = 2
+
+[node name="LifeSupport" parent="." instance=ExtResource("2_371um")]
+layout_mode = 2
+texture = ExtResource("4_mmjhy")
+system_name = 1
+
+[node name="ShieldGenerator" parent="." instance=ExtResource("2_371um")]
+layout_mode = 2
+texture = ExtResource("5_k4m7m")
+system_name = 2
+
+[node name="WeaponsSystem" parent="." instance=ExtResource("2_371um")]
+layout_mode = 2
+texture = ExtResource("6_u4frt")
+system_name = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 40
+
+[node name="Stats" parent="MarginContainer" instance=ExtResource("7_nxbhq")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[connection signal="system_selected" from="FusionReactor" to="." method="_on_system_selected"]
+[connection signal="system_selected" from="LifeSupport" to="." method="_on_system_selected"]
+[connection signal="system_selected" from="ShieldGenerator" to="." method="_on_system_selected"]
+[connection signal="system_selected" from="WeaponsSystem" to="." method="_on_system_selected"]

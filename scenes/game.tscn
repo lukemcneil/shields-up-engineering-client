@@ -1,0 +1,108 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqwr5ooo18hb7"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_1d1x4"]
+[ext_resource type="PackedScene" uid="uid://h50ra51l6osc" path="res://scenes/systems.tscn" id="2_ktb82"]
+[ext_resource type="PackedScene" uid="uid://c47w0ekbq2n1s" path="res://scenes/hand.tscn" id="3_rt28j"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="3_t3srd"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_1d1x4")
+metadata/_edit_lock_ = true
+
+[node name="PlayerInfo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -77.0
+offset_right = 119.0
+grow_vertical = 0
+
+[node name="CardsInHand" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Cards In Hand:
+"
+
+[node name="PlayersTurn" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Players Turn:"
+
+[node name="ActionsLeft" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Selected Card:"
+
+[node name="SelectedCard" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Selected Card: "
+
+[node name="SelectedSystem" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Selected System: "
+
+[node name="TurnState" type="Label" parent="PlayerInfo"]
+layout_mode = 2
+text = "Turn State:
+"
+
+[node name="ActionResult" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -106.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Action Result:"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -482.0
+offset_right = 482.0
+offset_bottom = 792.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="OpponentSystems" parent="VBoxContainer" instance=ExtResource("2_ktb82")]
+unique_name_in_owner = true
+layout_mode = 2
+upside_down = true
+
+[node name="MySystems" parent="VBoxContainer" instance=ExtResource("2_ktb82")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Hand" parent="VBoxContainer" instance=ExtResource("3_rt28j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(0.79, 0.79)
+script = ExtResource("3_t3srd")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayInstant" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+text = "Play Instant"
+
+[connection signal="system_selected" from="VBoxContainer/MySystems" to="." method="_on_my_systems_system_selected"]
+[connection signal="selected_card_changed" from="VBoxContainer/Hand" to="." method="_on_hand_selected_card_changed"]
+[connection signal="pressed" from="VBoxContainer2/PlayInstant" to="." method="_on_play_instant_pressed"]

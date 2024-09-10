@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://vpapewogxcfi"]
+
+[ext_resource type="Script" path="res://scripts/system.gd" id="1_d2rcv"]
+[ext_resource type="Texture2D" uid="uid://2ooi8c7la6xk" path="res://assets/cards/fusionreactor.png" id="2_ochpa"]
+[ext_resource type="PackedScene" uid="uid://db4k1whmm3uwc" path="res://scenes/card.tscn" id="3_fn4an"]
+
+[node name="System" type="VBoxContainer"]
+custom_minimum_size = Vector2(200, 394)
+offset_right = 200.0
+offset_bottom = 393.0
+script = ExtResource("1_d2rcv")
+texture = ExtResource("2_ochpa")
+modulate_color = Color(0.98275, 6.28106e-06, 5.77569e-07, 1)
+
+[node name="EnergyLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Energy:"
+horizontal_alignment = 1
+
+[node name="OverloadsLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Overloads:"
+horizontal_alignment = 1
+
+[node name="Cards" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = -212
+
+[node name="SystemCard" parent="Cards" groups=["system_cards"] instance=ExtResource("3_fn4an")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Card" parent="Cards" instance=ExtResource("3_fn4an")]
+z_index = -1
+layout_mode = 2
+
+[connection signal="card_clicked" from="Cards/SystemCard" to="." method="_on_system_card_card_clicked"]

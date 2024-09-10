@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c47w0ekbq2n1s"]
+
+[ext_resource type="PackedScene" uid="uid://db4k1whmm3uwc" path="res://scenes/card.tscn" id="1_gclpv"]
+[ext_resource type="Script" path="res://scripts/hand.gd" id="1_ln8w8"]
+
+[node name="Hand" type="HBoxContainer"]
+custom_minimum_size = Vector2(578, 300)
+offset_right = 1106.0
+offset_bottom = 500.0
+alignment = 1
+script = ExtResource("1_ln8w8")
+
+[node name="Card" parent="." instance=ExtResource("1_gclpv")]
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 3
+
+[node name="Card2" parent="." instance=ExtResource("1_gclpv")]
+layout_mode = 2
+expand_mode = 3
+
+[node name="Card3" parent="." instance=ExtResource("1_gclpv")]
+layout_mode = 2
+expand_mode = 3

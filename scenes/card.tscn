@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://db4k1whmm3uwc"]
+
+[ext_resource type="Texture2D" uid="uid://2ooi8c7la6xk" path="res://assets/cards/fusionreactor.png" id="1_ypjps"]
+[ext_resource type="Script" path="res://scripts/card.gd" id="2_lbkh0"]
+
+[node name="Card" type="TextureRect"]
+custom_minimum_size = Vector2(40, 54.545)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_ypjps")
+expand_mode = 5
+script = ExtResource("2_lbkh0")

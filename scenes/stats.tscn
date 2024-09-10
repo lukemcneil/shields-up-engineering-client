@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhieqvvc5eg2i"]
+
+[ext_resource type="Script" path="res://scripts/stats.gd" id="1_arqng"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e2koo"]
+bg_color = Color(0.374139, 0.374139, 0.374139, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.0431963, 0, 0.560048, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[node name="Stats" type="Container"]
+offset_right = 125.0
+offset_bottom = 97.0
+script = ExtResource("1_arqng")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e2koo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DamageLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Damage:"
+
+[node name="ShieldsLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Shields:"
+
+[node name="ShortCircuitsLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ShortCircuits:"
