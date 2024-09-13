@@ -5,10 +5,13 @@ extends Control
 @onready var hand: Hand = %Hand as Hand
 @onready var actions: VBoxContainer = %Actions
 @onready var resolve_effects: ResolveEffects = %ResolveEffects as ResolveEffects
+@onready var not_your_turn: VBoxContainer = %NotYourTurn
 
 # The URL we will connect to.
-@export var websocket_url = "ws://127.0.0.1:8000/game"
-#@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game"
+#@export var websocket_url = "ws://127.0.0.1:8000/game/test"
+@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game/test"
+var player := "Player1"
+var latest_state : Dictionary
 var players_turn : String
 var selected_card_index: int = -1
 var has_selected_system: bool = false
@@ -62,26 +65,34 @@ func _process(_delta):
 
 func _update_state(state: Dictionary):
 	if state.has("player1"):
-		var player1_state: Dictionary = state.player1
-		var player2_state: Dictionary = state.player2
-		$PlayerInfo/CardsInHand.text = "Cards In Hand: " + str(len(player1_state.hand))
+		latest_state = state
+		var my_state: Dictionary = state.player1 if player == "Player1" else state.player2
+		var opponent_state: Dictionary = state.player2 if player == "Player1" else state.player1
+		$PlayerInfo/CardsInHand.text = "Cards In Hand: " + str(len(my_state.hand))
 		$PlayerInfo/PlayersTurn.text = "Players Turn: " + state.players_turn
+		$PlayerInfo/Player.text = "Player: " + player
 		players_turn = state.players_turn
 		$PlayerInfo/ActionsLeft.text = "Actions Left: " + str(state.actions_left)
 		$PlayerInfo/TurnState.text = "Turn State: " + str(state.turn_state)
 		
-		my_systems.update_system_state(player1_state)
-		opponent_systems.update_system_state(player2_state)
-		hand.update_hand(player1_state.hand)
+		my_systems.update_system_state(my_state)
+		opponent_systems.update_system_state(opponent_state)
+		hand.update_hand(my_state.hand)
 		_on_hand_selected_card_changed(-1)
 		_on_my_systems_system_selected(System.SystemName.FusionReactor, false)
-		if typeof(state.turn_state) == TYPE_STRING && state.turn_state == "ChoosingAction":
+		if players_turn != player:
+			actions.hide()
+			resolve_effects.hide()
+			not_your_turn.show()
+		elif typeof(state.turn_state) == TYPE_STRING && state.turn_state == "ChoosingAction":
 			actions.show()
 			resolve_effects.hide()
+			not_your_turn.hide()
 		else:
 			resolve_effects.update_effects(state.turn_state.ResolvingEffects.effects)
 			resolve_effects.show()
 			actions.hide()
+			not_your_turn.hide()
 	else:
 		$ActionResult.text = "Action Result: " + str(state)
 
@@ -124,3 +135,10 @@ func _on_stop_resolving_effects_pressed() -> void:
 
 func _on_resolve_effects_resolve_effect(effect: String) -> void:
 	socket.send_text('{"player":"' + players_turn + '","user_action":{"ResolveEffect": {"resolve_effect": "' + effect + '"}}}')
+
+func _on_change_player_pressed() -> void:
+	if player == "Player1":
+		player = "Player2"
+	else:
+		player = "Player1"
+	_update_state(latest_state)
