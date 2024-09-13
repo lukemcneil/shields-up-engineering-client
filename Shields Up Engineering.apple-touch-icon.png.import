@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfkuakpi7fg5r"
-path="res://.godot/imported/Shields Up Engineering.apple-touch-icon.png-cd4b76361c232bea9a2d10e4203360ef.ctex"
+uid="uid://dvsh5yvjq5j24"
+path="res://.godot/imported/Shields Up Engineering.apple-touch-icon.png-b3dd9be3aff2128d7ffc12518517f563.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://build/web/Shields Up Engineering.apple-touch-icon.png"
-dest_files=["res://.godot/imported/Shields Up Engineering.apple-touch-icon.png-cd4b76361c232bea9a2d10e4203360ef.ctex"]
+source_file="res://build/Shields Up Engineering.apple-touch-icon.png"
+dest_files=["res://.godot/imported/Shields Up Engineering.apple-touch-icon.png-b3dd9be3aff2128d7ffc12518517f563.ctex"]
 
 [params]
 

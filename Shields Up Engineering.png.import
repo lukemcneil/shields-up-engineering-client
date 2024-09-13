@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sib77p3kxdnu"
-path="res://.godot/imported/Shields Up Engineering.png-4f292e6d0d7f22d05a5a801930b5ad87.ctex"
+uid="uid://dxews07avbkku"
+path="res://.godot/imported/Shields Up Engineering.png-cc74c127209e0b88c167a78305a60ce7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://build/web/Shields Up Engineering.png"
-dest_files=["res://.godot/imported/Shields Up Engineering.png-4f292e6d0d7f22d05a5a801930b5ad87.ctex"]
+source_file="res://build/Shields Up Engineering.png"
+dest_files=["res://.godot/imported/Shields Up Engineering.png-cc74c127209e0b88c167a78305a60ce7.ctex"]
 
 [params]
 
