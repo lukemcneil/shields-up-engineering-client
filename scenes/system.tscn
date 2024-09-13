@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://vpapewogxcfi"]
 
 [ext_resource type="Script" path="res://scripts/system.gd" id="1_d2rcv"]
-[ext_resource type="Texture2D" uid="uid://2ooi8c7la6xk" path="res://assets/cards/fusionreactor.png" id="2_ochpa"]
-[ext_resource type="PackedScene" uid="uid://db4k1whmm3uwc" path="res://scenes/card.tscn" id="3_fn4an"]
+[ext_resource type="Texture2D" uid="uid://dmrd60y0aprkd" path="res://assets/cards/fusionreactor.png" id="2_ochpa"]
+[ext_resource type="PackedScene" uid="uid://c4eydobygovok" path="res://scenes/card.tscn" id="3_fn4an"]
 
 [node name="System" type="VBoxContainer"]
 custom_minimum_size = Vector2(200, 394)
@@ -29,9 +29,11 @@ theme_override_constants/separation = -212
 [node name="SystemCard" parent="Cards" groups=["system_cards"] instance=ExtResource("3_fn4an")]
 unique_name_in_owner = true
 layout_mode = 2
+texture = ExtResource("2_ochpa")
 
 [node name="Card" parent="Cards" instance=ExtResource("3_fn4an")]
 z_index = -1
 layout_mode = 2
+texture = ExtResource("2_ochpa")
 
 [connection signal="card_clicked" from="Cards/SystemCard" to="." method="_on_system_card_card_clicked"]

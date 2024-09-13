@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c47w0ekbq2n1s"]
+[gd_scene load_steps=3 format=3 uid="uid://dg6dj3dkalep4"]
 
-[ext_resource type="PackedScene" uid="uid://db4k1whmm3uwc" path="res://scenes/card.tscn" id="1_gclpv"]
+[ext_resource type="PackedScene" uid="uid://c4eydobygovok" path="res://scenes/card.tscn" id="1_gclpv"]
 [ext_resource type="Script" path="res://scripts/hand.gd" id="1_ln8w8"]
 
 [node name="Hand" type="HBoxContainer"]

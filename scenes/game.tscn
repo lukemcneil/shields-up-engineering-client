@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://h50ra51l6osc" path="res://scenes/systems.tscn" id="2_ktb82"]
 [ext_resource type="StyleBox" uid="uid://c6vpnj5p1ehu5" path="res://resources/stats_style_box.tres" id="2_nc3ns"]
 [ext_resource type="Script" path="res://scripts/resolve_effects.gd" id="3_mqahy"]
-[ext_resource type="PackedScene" uid="uid://c47w0ekbq2n1s" path="res://scenes/hand.tscn" id="3_rt28j"]
+[ext_resource type="PackedScene" uid="uid://dg6dj3dkalep4" path="res://scenes/hand.tscn" id="3_rt28j"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="3_t3srd"]
 
 [node name="Game" type="Control"]

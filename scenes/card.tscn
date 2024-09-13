@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://db4k1whmm3uwc"]
+[gd_scene load_steps=3 format=3 uid="uid://c4eydobygovok"]
 
-[ext_resource type="Texture2D" uid="uid://2ooi8c7la6xk" path="res://assets/cards/fusionreactor.png" id="1_ypjps"]
+[ext_resource type="Texture2D" uid="uid://dmrd60y0aprkd" path="res://assets/cards/fusionreactor.png" id="1_ypjps"]
 [ext_resource type="Script" path="res://scripts/card.gd" id="2_lbkh0"]
 
 [node name="Card" type="TextureRect"]

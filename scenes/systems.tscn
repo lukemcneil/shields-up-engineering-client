@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/systems.gd" id="1_o6sea"]
 [ext_resource type="PackedScene" uid="uid://vpapewogxcfi" path="res://scenes/system.tscn" id="2_371um"]
-[ext_resource type="Texture2D" uid="uid://bp31fplfvv1w0" path="res://assets/cards/lifesupport.png" id="4_mmjhy"]
-[ext_resource type="Texture2D" uid="uid://wq264j2lrk82" path="res://assets/cards/shieldgenerator.png" id="5_k4m7m"]
-[ext_resource type="Texture2D" uid="uid://ccxgug53ci5kk" path="res://assets/cards/weaponssystem.png" id="6_u4frt"]
-[ext_resource type="PackedScene" uid="uid://dhieqvvc5eg2i" path="res://scenes/stats.tscn" id="7_nxbhq"]
+[ext_resource type="Texture2D" uid="uid://b3w1pobxgtffu" path="res://assets/cards/lifesupport.png" id="4_mmjhy"]
+[ext_resource type="Texture2D" uid="uid://yodn36tc2k7a" path="res://assets/cards/shieldgenerator.png" id="5_k4m7m"]
+[ext_resource type="Texture2D" uid="uid://07bjiyrjyee5" path="res://assets/cards/weaponssystem.png" id="6_u4frt"]
+[ext_resource type="PackedScene" uid="uid://0uhrymy54j1d" path="res://scenes/stats.tscn" id="7_nxbhq"]
 
 [node name="Systems" type="HBoxContainer"]
 anchors_preset = 5
