@@ -1,3 +1,4 @@
+class_name Game
 extends Control
 
 @onready var my_systems: Systems = %MySystems as Systems
@@ -8,28 +9,42 @@ extends Control
 @onready var not_your_turn: VBoxContainer = %NotYourTurn
 
 # The URL we will connect to.
-#@export var websocket_url = "ws://127.0.0.1:8000/game/test"
-@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game/test"
-var player := "Player1"
+#@export var websocket_url := "ws://127.0.0.1:8000/game/"
+@export var websocket_url = "wss://shields-up-engineering-server.onrender.com/game/"
+@export var game_room := "test"
+
+@export var player := Player.Player1
 var latest_state : Dictionary
-var players_turn : String
+var players_turn : Player
 var selected_card_index: int = -1
 var has_selected_system: bool = false
 var selected_system: System.SystemName
+var connected := false
 
 # Our WebSocketClient instance.
 var socket := WebSocketPeer.new()
 
+enum Player {
+	Player1,
+	Player2
+}
+
 func _ready():
-	# Initiate connection to the given URL.
-	var err = socket.connect_to_url(websocket_url)
+	connect_to_server()
+
+func connect_to_server():
+		# Initiate connection to the given URL.
+	print(websocket_url + game_room)
+	var err = socket.connect_to_url(websocket_url + game_room)
 	if err != OK:
 		print("Unable to connect")
-		set_process(false)
 	else:
 		print("Connected to server")
+		connected = true
 
 func _process(_delta):
+	if !connected:
+		pass
 	# Call this in _process or _physics_process. Data transfer and state updates
 	# will only happen when calling this function.
 	socket.poll()
@@ -66,12 +81,12 @@ func _process(_delta):
 func _update_state(state: Dictionary):
 	if state.has("player1"):
 		latest_state = state
-		var my_state: Dictionary = state.player1 if player == "Player1" else state.player2
-		var opponent_state: Dictionary = state.player2 if player == "Player1" else state.player1
+		var my_state: Dictionary = state.player1 if player == Player.Player1 else state.player2
+		var opponent_state: Dictionary = state.player2 if player == Player.Player1 else state.player1
 		$PlayerInfo/CardsInHand.text = "Cards In Hand: " + str(len(my_state.hand))
 		$PlayerInfo/PlayersTurn.text = "Players Turn: " + state.players_turn
-		$PlayerInfo/Player.text = "Player: " + player
-		players_turn = state.players_turn
+		$PlayerInfo/Player.text = "Player: " + Player.find_key(player)
+		players_turn = Player.get(state.players_turn)
 		$PlayerInfo/ActionsLeft.text = "Actions Left: " + str(state.actions_left)
 		$PlayerInfo/TurnState.text = "Turn State: " + str(state.turn_state)
 		
@@ -110,35 +125,35 @@ func _on_my_systems_system_selected(system_name: System.SystemName, should_set_s
 
 func _on_hot_wire_pressed() -> void:
 	if selected_card_index != -1 and has_selected_system:
-		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"HotWireCard":{"card_index":' + str(selected_card_index) + ', "system": "' + System.SystemName.find_key(selected_system) + '", "indices_to_discard": []}}}}}')
+		socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ChooseAction":{"action":{"HotWireCard":{"card_index":' + str(selected_card_index) + ', "system": "' + System.SystemName.find_key(selected_system) + '", "indices_to_discard": []}}}}}')
 
 func _on_play_instant_pressed() -> void:
 	if selected_card_index != -1:
-		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"PlayInstantCard":{"card_index":' + str(selected_card_index) + '}}}}}')
+		socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ChooseAction":{"action":{"PlayInstantCard":{"card_index":' + str(selected_card_index) + '}}}}}')
 
 func _on_activate_system_pressed() -> void:
 	if has_selected_system:
-		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"ActivateSystem":{"system": "' + System.SystemName.find_key(selected_system) + '", "energy_to_use": null, "energy_distribution": {"FusionReactor": 0, "LifeSupport": 2, "ShieldGenerator": 1, "Weapons": 2}}}}}}')
+		socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ChooseAction":{"action":{"ActivateSystem":{"system": "' + System.SystemName.find_key(selected_system) + '", "energy_to_use": null, "energy_distribution": {"FusionReactor": 0, "LifeSupport": 2, "ShieldGenerator": 1, "Weapons": 2}}}}}}')
 
 func _on_discard_overload_pressed() -> void:
 	if has_selected_system:
-		socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":{"DiscardOverload":{"system": "' + System.SystemName.find_key(selected_system) + '"}}}}}')
+		socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ChooseAction":{"action":{"DiscardOverload":{"system": "' + System.SystemName.find_key(selected_system) + '"}}}}}')
 
 func _on_reduce_short_circuits_pressed() -> void:
-	socket.send_text('{"player":"' + players_turn + '","user_action":{"ChooseAction":{"action":"ReduceShortCircuits"}}}')
+	socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ChooseAction":{"action":"ReduceShortCircuits"}}}')
 
 func _on_pass_pressed() -> void:
-	socket.send_text('{"player":"' + players_turn + '","user_action":{"Pass":{"card_indices_to_discard":[]}}}')
+	socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"Pass":{"card_indices_to_discard":[]}}}')
 
 func _on_stop_resolving_effects_pressed() -> void:
-	socket.send_text('{"player":"' + players_turn + '","user_action":"StopResolvingEffects"}')
+	socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":"StopResolvingEffects"}')
 
 func _on_resolve_effects_resolve_effect(effect: String) -> void:
-	socket.send_text('{"player":"' + players_turn + '","user_action":{"ResolveEffect": {"resolve_effect": "' + effect + '"}}}')
+	socket.send_text('{"player":"' + Player.find_key(players_turn) + '","user_action":{"ResolveEffect": {"resolve_effect": "' + effect + '"}}}')
 
 func _on_change_player_pressed() -> void:
-	if player == "Player1":
-		player = "Player2"
+	if player == Player.Player1:
+		player = Player.Player2
 	else:
-		player = "Player1"
+		player = Player.Player1
 	_update_state(latest_state)

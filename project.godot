@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Shields Up Engineering"
-run/main_scene="res://scenes/game.tscn"
+run/main_scene="res://scenes/join_screen.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icons/Shield.png"
 
